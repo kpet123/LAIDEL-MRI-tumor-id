@@ -1,0 +1,47 @@
+# Author: Kate Mortensen
+# Most Recent Update: 5-27-2021
+
+# Execute the following commands in order,  one at a time 
+# (you will be prompted with y/n questions)
+
+# Log into RED and click the terminal icon on the desktop (this should automatically log you into RED. RED and Carbonate are different hosts but share the same file structure (or are mounted on the same file system rather?) so you will still be able to access the same home directory, slate directory, and slate-project directory. 
+
+# Create conda environment
+module load anaconda 
+conda create -n laidel
+source activate laidel 
+
+# Install packages
+conda install -c conda-forge tqdm
+conda install -c conda-forge pydicom
+pip install -U --user nilearn
+pip install versioned-hdf5
+pip install h5py
+conda install -c anaconda seaborn
+conda install PyTorch -c PyTorch
+pip install torchvision
+pip install -U albumentations
+
+# Add conda env to jupyter notebook
+conda install -c anaconda ipykernel
+python -m ipykernel install --user --name=laidel 
+
+# Navigate to working directory before launching jupyter notebook
+cd /N/project/<slate-project directory name here>
+
+# Launch notebook
+jupyter-notebook &
+
+# Notes:
+# '&' puts job in background 
+# Only run jobs in background if you're using an interactive node, using RED, orusing a private server
+
+# Shutdown notebook
+# First logout on the browser, then kill the job (otherwise RED tends to freeze)
+jobs
+kill %1 # I'm assuming you only have one job running in the background in which case the ID will be '1'
+
+# Notes:
+# When finished with RED, click the Log Out button on the desktop
+# If RED freezes, simply click the F8 key and disconnect session
+# When you log back in, be sure to click the new-session box 
