@@ -38,6 +38,7 @@ jupyter-notebook &
 
 # Shutdown notebook
 # First logout on the browser, then kill the job (otherwise RED tends to freeze)
+
 jobs
 kill %1 # I'm assuming you only have one job running in the background in which case the ID will be '1'
 
