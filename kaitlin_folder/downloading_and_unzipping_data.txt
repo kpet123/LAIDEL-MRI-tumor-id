@@ -1,0 +1,22 @@
+# 1. Download to lib. Dataset links are in Brats_data folder in root directory
+
+# Can use:
+#		wget [insert link here] 
+
+# 2. Unzip main folder
+#	unzip #insert name of zipped folder 
+
+# 3. Unzip contents
+
+# 3.1 insert path from this script to folder with data. This should hold the LGG and HGG folders
+folder_path = INSERT_FOLDER_PATH
+
+# 3.2 unzip all .nii files containing mri information
+gunzip -r folder_path/HGG
+
+gunzip -r folder_path/LGG
+
+
+#WANT FINAL FILE STRUCTURE LIKE THIS:
+lib/Brats_20XX/HGG
+lib/Brats_20XX/LGG
