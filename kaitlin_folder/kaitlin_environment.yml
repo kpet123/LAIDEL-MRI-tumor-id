@@ -1,0 +1,15 @@
+name: laidel-kaitlin
+
+channels:
+ - default
+ - anaconda
+ - conda-forge
+dependencies:
+ - numpy
+ - pandas
+ - seaborn
+ - dipy
+ - scipy
+ - scikit-learn
+ - scikit-image
+ - jupyterlab
