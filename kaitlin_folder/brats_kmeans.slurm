@@ -5,7 +5,7 @@
 #SBATCH -o brats2020_data_%j.txt
 #SBATCH -e brats2020_data_%j.err
 #SBATCH --mail-type=ALL
-#SBATCH --mail-user=kmorten@iu.edu
+#SBATCH --mail-user=kpet@iu.edu
 #SBATCH --nodes=1
 #SBATCH --mem=60gb
 #SBATCH --ntasks-per-node=8
