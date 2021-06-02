@@ -134,3 +134,6 @@ dmypy.json
 #NIFTI files
 .nii
 .nii.gz
+
+#Image preprocessing results
+/results
