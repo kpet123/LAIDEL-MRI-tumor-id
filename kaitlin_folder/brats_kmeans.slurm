@@ -15,5 +15,5 @@
 cd /N/project/laidel_el_mcv/LAIDEL-MRI-tumor-id/scripts
 module load anaconda
 module load dipy
-python3 kmeans_batch.py
+python3 ./scripts/kmeans_batch.py
 

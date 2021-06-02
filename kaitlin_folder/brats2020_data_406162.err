@@ -1,0 +1,4 @@
+/var/spool/slurm/d/job406162/slurm_script: line 15: cd: /N/project/laidel_el_mcv/LAIDEL-MRI-tumor-id/scripts: No such file or directory
+anaconda version 2019.03 loaded.
+dipy version 1.1.1 loaded.
+python3: can't open file 'kmeans_batch.py': [Errno 2] No such file or directory
