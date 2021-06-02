@@ -11,12 +11,13 @@ Path to directory containing Brats data (probably LGG or HGG)
 '''
 
 #path_to_lib = "../../lib/MICCAI_BraTS2020_TrainingData"
-path_to_lib = "../lib"
+path_to_lib = "/N/slate/kpet/LAIDEL-MRI-tumor-id/lib/BraTS_2018/HGG"
 
 '''
 path to results
 '''
-path_to_results = "../results/"
+path_to_results = "/N/slate/kpet/LAIDEL-MRI-tumor-id/kaitlin_folder/results"
+
 
 '''
 Function for finding mean and varieance of each cluster
