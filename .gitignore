@@ -136,4 +136,4 @@ dmypy.json
 .nii.gz
 
 #Image preprocessing results
-/results
+/results/
