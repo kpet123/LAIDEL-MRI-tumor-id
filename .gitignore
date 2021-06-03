@@ -134,3 +134,10 @@ dmypy.json
 #NIFTI files
 .nii
 .nii.gz
+
+#Image preprocessing results
+/results/
+
+
+#slurm output
+/slurm_output/
