@@ -137,3 +137,7 @@ dmypy.json
 
 #Image preprocessing results
 /results/
+
+
+#slurm output
+/slurm_output/
