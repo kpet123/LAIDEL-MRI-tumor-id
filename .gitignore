@@ -140,4 +140,4 @@ dmypy.json
 
 
 #slurm output
-/slurm_output/
+/slurm_output/*
