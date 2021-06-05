@@ -14,4 +14,4 @@
 #NOTE: THIS SCRIPT IS FAST. For stuff like this keep in debug queue and gets on queue faster
 module load anaconda
 module load dipy
-python3 /N/project/laidel_el_mcv/LAIDEL-MRI-tumor-id/kaitlin_folder/scripts/batch_kmeans_classify.py
+python3 /N/project/laidel_el_mcv/LAIDEL-MRI-tumor-id/kaitlin_folder/scripts/determine_metrics.py
