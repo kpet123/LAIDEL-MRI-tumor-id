@@ -32,6 +32,15 @@ clusters = 4
 #total size of data
 flat_length=240*240*155
 
+#holds names of MRI data identifiers in the order they were accessed
+data_order_ref = []
+
+#holds cluster means and variances
+mean_var_list = []
+
+#how did classifier do on each image?
+performance_eval_lst=[]
+
 
 #Function for finding mean and varieance of each cluster
 
@@ -42,6 +51,42 @@ def calc_mean_var(flair_2D, flair_kmeans, clusters):
         kmeans_arr[i]=np.array([np.mean(section), np.std(section)])
     return kmeans_arr
 
+
+#Evaluate segmentation
+
+def evaluate_segmentation(flair_kmeans,data_seg_flattened, tumor_label):
+    #coordinates of predicted and actual tumor
+    y_coors = np.argwhere(data_seg_flattened!=0)
+    flair_yhat_coors = np.argwhere(flair_kmeans ==tumor_label)
+    
+    #size of tumor and non-tumor (number of voxels)
+    tumor_size=len(y_coors)
+    non_tumor_size = len(data_seg_flattened)-tumor_size
+
+    #true positive
+    correct_id_tumor = np.intersect1d(y_coors, flair_yhat_coors, assume_unique=True)
+    percent_tumor_correct = len(correct_id_tumor)/tumor_size
+
+    #false positive
+    false_positive_points = np.setdiff1d(flair_yhat_coors, y_coors, assume_unique=True)
+    false_positive = len(false_positive_points)/non_tumor_size
+
+    #false negative
+    false_neg_points = np.setdiff1d(y_coors, flair_yhat_coors, assume_unique=True)
+    false_neg = len(false_neg_points)/tumor_size
+
+    
+    #true negative
+    true_negative=(len(data_seg_flattened)-(tumor_size+len(false_positive_points)))/non_tumor_size
+
+    #Total error (misidentification
+    total_incorrect_points = np.concatenate((false_neg_points, false_positive_points))
+    total_error = len(total_incorrect_points)/len(data_seg_flattened)
+    
+    return np.array([percent_tumor_correct, false_neg, true_negative, false_positive, total_error])
+
+
+ #Operation to be parellelized. Creates segmented tumor image and records metrics
 
 def loop_body(lib_folder_path):
 
@@ -69,27 +114,29 @@ def loop_body(lib_folder_path):
 
         #Get kmeans metrics (mean and variance of each blob)
     kmeans_metrics = calc_mean_var(data_flair_flattened, data_kmeans_flattened, clusters)
-   #print(kmeans_metrics, file=sys.stderr) #print to stderr so it shows up in error file   
-               
-    #extract putative tumor from original image and save - MODIFY THIS SECTION FOR POSTPROCESSING NEEDS
+    mean_var_list.append(kmeans_metrics)                
+    #print(kmeans_metrics, file=sys.stderr) #print to stderr so it shows up in error file   
+        #find label of tumor
     tumor_label = np.argmax(kmeans_metrics[:,0])
+                
+      #calculate confusion matrix-MODIFY THIS SECTION FOR DIFFERENT LOSS FUCNTIONS
+    performance_metrics = evaluate_segmentation(data_kmeans_flattened, data_seg_flattened, tumor_label)
+    performance_eval_lst.append(performance_metrics) 
 
-    #maybe use skimage.segmentation.mark_boundary
-    classified_flat = data_flair_flattened.copy()
-    classified_flat[data_flair_flattened != tumor_label]=0
-    classified_img = classified_flat.reshape(data_shape)
+    #Keep list of visited images
+    data_order_ref.append(data_id)
 
-         
-    #write segmented image to file
-    np.save(path_to_classified_folder+data_id+"_classified.npy", classified_img, allow_pickle=True, fix_imports=True)
-  
 
 #Iterate through each MRI folder, segment image and report performance
 
 #mutlithreading - make sure 'processes' <= number of total processes in SLURM
-with Pool(processes=16) as pool:
-        pool.map(loop_body, pathlib.Path(path_to_lib).iterdir())           
+#with Pool(processes=16) as pool:
+#        pool.map(loop_body, pathlib.Path(path_to_lib).iterdir())           
 
-#too slow when writing
-#[loop_body(x) for x in pathlib.Path(path_to_lib).iterdir()]
+[loop_body(x) for x in pathlib.Path(path_to_lib).iterdir()]
+
+print(data_order_ref, file=sys.stderr)
+#Save metadata as file
+dct = {"names": np.asarray(data_order_ref), "cluster_metrics": np.asarray(mean_var_list), "performance": np.asarray(performance_eval_lst)}
+np.savez(path_to_results_folder+"/kmeans_aggregate.npz", **dct)
 
