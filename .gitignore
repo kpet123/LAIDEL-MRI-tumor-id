@@ -141,3 +141,5 @@ dmypy.json
 
 #slurm output
 /slurm_output/*
+#segmented tumor images
+seg_images/
