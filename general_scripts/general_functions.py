@@ -67,22 +67,14 @@ def evaluate_segmentation(seg_hat_flat, seg_flat, tumor_label):
     #Dice loss    
     dice_loss = 2*len(intersect) / (tumor_size + yhat_size)
 
+       
     
     
-    
-    
-    
-    print("True Positive: ", percent_tumor_correct)
-    print("False negative: ", false_neg)
-    print("True Negative: ", true_negative)
-    print("False Positive: ", false_positive)
-    print("'specificity':", specificity)
-    print("Combined TP and Specificity ", metric)
-    print("Dice loss is ", dice_loss)
-    print("Jaccard loss is ", jaccard_loss)
-    print("************")
-    print("Total Error: ", total_error)
+    results = np.array([percent_tumor_correct, false_neg, true_negative, 
+                      false_positive, specificity, metric, dice_loss,jaccard_loss, total_error ])
 
 
+    return results    
+    
 def testfun(a):
-	return a+1
+        return a+1 

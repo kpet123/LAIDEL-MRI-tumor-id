@@ -17,10 +17,10 @@ from multiprocessing import Pool
 path_to_lib = "/N/project/laidel_el_mcv/LAIDEL-MRI-tumor-id/lib/MICCAI_BraTS2020_TrainingData" 
 
 #Path to classified MRI image in .npy format
-path_to_yhat_folder ="/N/project/laidel_el_mcv/LAIDEL-MRI-tumor-id/results/PATH_TO_CLASSIFIED_IMAGES" +"/"
+path_to_yhat_folder ="/N/project/laidel_el_mcv/LAIDEL-MRI-tumor-id/results/kmeans_classified/"
 
 #Path to results folder to store metatdata. TODO: CHANGE TH
-output_path ="/N/project/laidel_el_mcv/LAIDEL-MRI-tumor-id/results/metrics_csvs/YOUR_CSV_NAME_HERE"
+output_path ="/N/project/laidel_el_mcv/LAIDEL-MRI-tumor-id/results/metrics_csvs/kmeans_metrics"
 
 #how did classifier do on each image? Holds image name and metrics
 performance_eval_dct={}

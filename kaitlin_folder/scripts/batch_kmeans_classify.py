@@ -16,7 +16,7 @@ path_to_lib = "/N/project/laidel_el_mcv/LAIDEL-MRI-tumor-id/lib/MICCAI_BraTS2020
 #path_to_lib = "/N/project/laidel_el_mcv/BraTS2020/100-sample-dataset/BraTS2020_ValidationData/MICCAI_BraTS2020_ValidationData/"
 
 #Path to segmented kmeans images
-path_to_kmeans_folder ="/N/project/laidel_el_mcv/LAIDEL-MRI-tumor-id/results/kmeans-kaitlin/"
+path_to_kmeans_folder ="/N/project/laidel_el_mcv/LAIDEL-MRI-tumor-id/results/kmeans-preprocessed/"
 
 #Path to classified image (tumor v no tumor) 
 path_to_classified_folder ="/N/project/laidel_el_mcv/LAIDEL-MRI-tumor-id/results/kmeans_classified/"
@@ -72,16 +72,13 @@ def loop_body(lib_folder_path):
    #print(kmeans_metrics, file=sys.stderr) #print to stderr so it shows up in error file   
                
     #extract putative tumor from original image and save - MODIFY THIS SECTION FOR POSTPROCESSING NEEDS
+    #print("unique labels are", np.unique(data_kmeans_flattened))
     tumor_label = np.argmax(kmeans_metrics[:,0])
-
+    print("tumor label for ", data_id, "is ", tumor_label)
     #maybe use skimage.segmentation.mark_boundary
-    classified_flat = data_flair_flattened.copy()
-    classified_flat[data_flair_flattened != tumor_label]=0
-    classified_img = classified_flat.reshape(data_shape)
-
-         
+    data_kmeans[data_kmeans != tumor_label]=0     
     #write segmented image to file
-    np.save(path_to_classified_folder+data_id+"_classified.npy", classified_img, allow_pickle=True, fix_imports=True)
+    np.save(path_to_classified_folder+data_id+"_classified.npy", data_kmeans, allow_pickle=True, fix_imports=True)
   
 
 #Iterate through each MRI folder, segment image and report performance
