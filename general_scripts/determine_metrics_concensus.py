@@ -81,6 +81,8 @@ for smalldct in result:
         dct.update(smalldct)
 #Save metadata as pandas dataframe, then covert to csv
 
+np.savez(output_path, result)
+
 output = pd.DataFrame(dct, index = ["True Positive", 
                                                                         "False negative", 
                                                                         "True Negative", 

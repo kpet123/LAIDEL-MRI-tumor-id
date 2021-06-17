@@ -50,8 +50,19 @@ def loop_body(path):
             #reshape
             flair_2D = data_flair.reshape(flat_length, 1) #kmeans needs 2d (vertical) matrix where each row is a datapoint
             flair_kmeans = sklearn.cluster.KMeans(n_clusters=clusters, random_state=0).fit_predict(flair_2D)
-            
-            
+
+            #calc mean and variance to find brightest patch
+            kmeans_metrics = calc_mean_var(data_flair.flatten(), flair_kmeans.flatten(), clusters)
+           #print(kmeans_metrics, file=sys.stderr) #print to stderr so it shows up in error file   
+
+            #extract putative tumor from original image and save - MODIFY THIS SECTION FOR POSTPROCESSING NEEDS
+            #print("unique labels are", np.unique(data_kmeans_flattened))
+            tumor_label = np.argmax(kmeans_metrics[:,0])
+            print("tumor label for ", data_id, "is ", tumor_label)
+            #maybe use skimage.segmentation.mark_boundary
+            flair_kmeans[flair_kmeans != tumor_label]=0
+                    
+                    
             flair_kmeans_brain = flair_kmeans.reshape(240, 240, 155)
            
             #write data output
